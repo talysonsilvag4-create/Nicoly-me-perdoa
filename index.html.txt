@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questionário do Amor ❤️</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffe6f0 0%, #ffcce0 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      overflow-x: hidden;
+      color: #8a0c4e;
+    }
+    
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(164, 19, 92, 0.2);
+      max-width: 500px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hearts-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .heart {
+      position: absolute;
+      font-size: 20px;
+      color: #ff4da6;
+      opacity: 0;
+      z-index: -1;
+    }
+    
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0);
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(20px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+    
+    .title {
+      color: #d81a6c;
+      margin-bottom: 20px;
+      font-size: 28px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 2;
+    }
+    
+    .message {
+      margin: 20px 0;
+      font-size: 18px;
+      color: #cc0066;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    button {
+      padding: 12px 25px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 50px;
+      border: none;
+      background-color: #ff4da6;
+      color: white;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    button:hover {
+      background-color: #e60073;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    #naoBtn {
+      background-color: #b8b8b8;
+    }
+    
+    #naoBtn:hover {
+      background-color: #999;
+    }
+    
+    .fugitivo {
+      position: absolute;
+      transition: all 0.5s ease;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .final-content {
+      margin: 20px 0;
+    }
+    
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 25px;
+    }
+    
+    .social-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    .instagram-btn {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: white;
+    }
+    
+    .whatsapp-btn {
+      background-color: #25D366;
+      color: white;
+    }
+    
+    .social-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .progress {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+      gap: 8px;
+    }
+    
+    .progress-step {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #ffcce0;
+    }
+    
+    .progress-step.active {
+      background-color: #ff4da6;
+    }
+    
+    .decoration {
+      position: absolute;
+      font-size: 80px;
+      opacity: 0.1;
+      color: #ff4da6;
+      z-index: 0;
+    }
+    
+    .decoration.top-left {
+      top: 10px;
+      left: 10px;
+    }
+    
+    .decoration.top-right {
+      top: 10px;
+      right: 10px;
+      transform: rotate(90deg);
+    }
+    
+    .decoration.bottom-left {
+      bottom: 10px;
+      left: 10px;
+      transform: rotate(270deg);
+    }
+    
+    .decoration.bottom-right {
+      bottom: 10px;
+      right: 10px;
+      transform: rotate(180deg);
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    .floating { 
+      animation-name: floating;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      animation-timing-function: ease-in-out;
+    }
+    
+    @keyframes floating {
+      0% { transform: translate(0, 0px); }
+      50% { transform: translate(0, 10px); }
+      100% { transform: translate(0, -0px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <div class="decoration top-left">❤️</div>
+    <div class="decoration top-right">❤️</div>
+    <div class="decoration bottom-left">❤️</div>
+    <div class="decoration bottom-right">❤️</div>
+    
+    <div class="progress">
+      <div class="progress-step" id="step1"></div>
+      <div class="progress-step" id="step2"></div>
+    </div>
+    
+    <h1 class="title" id="pergunta">Você me perdoa? ❤️</h1>
+    <div class="message" id="message"></div>
+    
+    <div class="buttons">
+      <button id="simBtn" onclick="responder('sim')">Sim ❤️</button>
+      <button id="naoBtn" onclick="responder('nao')">Não 💔</button>
+    </div>
+    
+    <div id="final" class="final-content"></div>
+  </div>
+
+  <script>
+    let etapa = 1;
+    let respostas = [];
+    let modoConfirmacao = false;
+    let mensagensPersuasao = [
+      "Eu vou ficar tão triste... 😢",
+      "Não faça isso comigo! 💔",
+      "Você é o amor da minha vida! ❤️",
+      "Por favor, não me deixe! 🥺",
+      "Eu mudarei, prometo! 🙏"
+    ];
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+      atualizarProgresso();
+      criarCoracoes();
+    });
+
+    function atualizarProgresso() {
+      document.querySelectorAll('.progress-step').forEach((step, index) => {
+        if (index + 1 <= etapa) {
+          step.classList.add('active');
+        } else {
+          step.classList.remove('active');
+        }
+      });
+    }
+
+    function criarCoracoes() {
+      const heartsContainer = document.getElementById('heartsContainer');
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤️';
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.top = Math.random() * 100 + '%';
+        heart.style.animation = `floatHeart ${5 + Math.random() * 5}s linear ${Math.random() * 5}s infinite`;
+        heartsContainer.appendChild(heart);
+      }
+    }
+
+    function responder(resposta) {
+      // Reset da mensagem
+      document.getElementById("message").innerHTML = "";
+      
+      if (modoConfirmacao) {
+        // Estamos no modo de confirmação de um "Não"
+        if (resposta === 'sim') {
+          // Confirmou que não quer perdoar/casar
+          if (etapa === 1) {
+            respostas.push("Você me perdoa? → Não 💔 (Confirmado)");
+            avancarPersuasao();
+          } else if (etapa === 2) {
+            respostas.push("Você vai se casar comigo? → Não 💔 (Confirmado)");
+            mostrarFinalTriste();
+          }
+        } else {
+          // Arrependeu-se, não confirmou o "Não"
+          modoConfirmacao = false;
+          resetarBotoes();
+          if (etapa === 1) {
+            document.getElementById("pergunta").innerHTML = "Você me perdoa? ❤️";
+          } else {
+            document.getElementById("pergunta").innerHTML = "Você vai se casar comigo? 💍❤️";
+          }
+          document.getElementById("message").innerHTML = "Que bom que você reconsiderou! ❤️";
+        }
+        return;
+      }
+      
+      if (resposta === 'sim') {
+        // Processar resposta Sim
+        if (etapa === 1) {
+          respostas.push("Você me perdoa? → Sim ❤️");
+          etapa = 2;
+          mostrarCasamento();
+        } else if (etapa === 2) {
+          respostas.push("Você vai se casar comigo? → Sim ❤️");
+          mostrarFinalFeliz();
+        }
+        atualizarProgresso();
+      } else {
+        // Processar resposta Não - entrar no modo confirmação
+        modoConfirmacao = true;
+        document.getElementById("pergunta").innerHTML = "Tem certeza?";
+        document.getElementById("simBtn").innerHTML = "Sim, tenho certeza 💔";
+        document.getElementById("naoBtn").innerHTML = "Não, quero reconsiderar ❤️";
+        
+        // Fazer o botão do NÃO (agora o "reconsiderar") fugir
+        fugir();
+      }
+    }
+
+    function avancarPersuasao() {
+      modoConfirmacao = false;
+      
+      if (etapa === 1) {
+        exibirMensagemPersuasiva("Você vai me magoar assim? 😢", function() {
+          document.getElementById("pergunta").innerHTML = "Você vai se casar comigo? 💍❤️";
+          document.getElementById("message").innerHTML = "";
+          etapa = 2;
+          resetarBotoes();
+          atualizarProgresso();
+        });
+      }
+    }
+
+    function exibirMensagemPersuasiva(mensagem, callback) {
+      document.getElementById("pergunta").innerHTML = mensagem;
+      document.getElementById("simBtn").classList.add("hidden");
+      document.getElementById("naoBtn").classList.add("hidden");
+      
+      let counter = 0;
+      const interval = setInterval(() => {
+        if (counter < mensagensPersuasao.length) {
+          document.getElementById("message").innerHTML = mensagensPersuasao[counter];
+          counter++;
+        } else {
+          clearInterval(interval);
+          setTimeout(callback, 1000);
+        }
+      }, 2000);
+    }
+
+    // ---- Telas de fluxo ----
+    function mostrarCasamento() {
+      document.getElementById("pergunta").innerHTML = "Você vai se casar comigo? 💍❤️";
+      resetarBotoes();
+    }
+
+    function mostrarFinalFeliz() {
+      document.getElementById("pergunta").innerHTML = "Você é o amor da minha vida ❤️😍";
+      document.getElementById("message").innerHTML = "Agora é para sempre! 💒";
+      document.getElementById("simBtn").classList.add("hidden");
+      document.getElementById("naoBtn").classList.add("hidden");
+      
+      setTimeout(() => {
+        mostrarResumo();
+      }, 2000);
+    }
+
+    function mostrarFinalTriste() {
+      document.getElementById("pergunta").innerHTML = "Você não quer se casar comigo? 💔";
+      document.getElementById("message").innerHTML = "Você realmente não quer fazer parte da minha vida? 😢";
+      document.getElementById("simBtn").classList.add("hidden");
+      document.getElementById("naoBtn").classList.add("hidden");
+      
+      document.getElementById("final").innerHTML = `
+        <div class="social-buttons">
+          <a href="https://www.instagram.com/talysonsillva?igsh=Nzd6NGlrdjcybXV1&utm_source=qr" class="social-btn instagram-btn" target="_blank">
+            <i class="fab fa-instagram"></i> Segue meu Insta
+          </a>
+        </div>
+      `;
+    }
+
+    // ---- Utilitários ----
+    function fugir() {
+      let botaoNao = document.getElementById("naoBtn");
+      botaoNao.classList.add("fugitivo");
+      moverBotao(botaoNao);
+      
+      // Adicionar evento de mouseover para continuar fugindo
+      botaoNao.onmouseover = function() {
+        moverBotao(botaoNao);
+      };
+    }
+
+    function moverBotao(botao) {
+      botao.style.left = Math.random() * 80 + 10 + "%";
+      botao.style.top = Math.random() * 50 + 50 + "%";
+    }
+
+    function resetarBotoes() {
+      const simBtn = document.getElementById("simBtn");
+      const naoBtn = document.getElementById("naoBtn");
+      
+      simBtn.innerHTML = "Sim ❤️";
+      naoBtn.innerHTML = "Não 💔";
+      
+      simBtn.classList.remove("hidden");
+      naoBtn.classList.remove("hidden");
+      naoBtn.classList.remove("fugitivo");
+      
+      simBtn.style.position = "static";
+      naoBtn.style.position = "static";
+      
+      // Remover event listener de fugir
+      naoBtn.onmouseover = null;
+    }
+
+    function mostrarResumo() {
+      document.getElementById("final").innerHTML = `
+        <div class="message pulse">
+          Você é 100% amor da vida do Talyson! ❤️
+        </div>
+        <div class="social-buttons">
+          <a href="https://www.instagram.com/talysonsillva?igsh=Nzd6NGlrdjcybXV1&utm_source=qr" class="social-btn instagram-btn" target="_blank">
+            <i class="fab fa-instagram"></i> Segue meu Insta
+          </a>
+          <a href="https://wa.me/5533998253013?text=Sim%2C%20eu%20aceito%20casar%20com%20você!%20❤️" class="social-btn whatsapp-btn" target="_blank">
+            <i class="fab fa-whatsapp"></i> Enviar para o WhatsApp
+          </a>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
